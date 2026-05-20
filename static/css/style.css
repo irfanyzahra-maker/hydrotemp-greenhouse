@@ -1,0 +1,77 @@
+:root {
+  --blue-light: #d9efff;
+  --blue-dark: #1d4d8a;
+  --white: #ffffff;
+  --gray-light: #f4f6fb;
+  --gray-soft: #e8edf4;
+  --green-pastel: #b8dfc2;
+}
+
+body {
+  background: radial-gradient(circle at top left, rgba(165, 214, 255, 0.35), transparent 35%),
+              linear-gradient(180deg, var(--white), var(--gray-light));
+  color: #2c3e50;
+  min-height: 100vh;
+}
+
+.navbar {
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.card {
+  border: none;
+}
+
+.card-summary {
+  background: linear-gradient(135deg, rgba(182, 223, 255, 0.98), rgba(255, 255, 255, 0.95));
+  border: 1px solid rgba(29, 77, 138, 0.12);
+}
+
+.analysis-card,
+.analysis-result-card {
+  background: #f8fcf5;
+  border: 1px solid rgba(184, 223, 194, 0.8);
+}
+
+.table-responsive {
+  max-height: 420px;
+}
+
+.table th,
+.table td {
+  vertical-align: middle;
+}
+
+.btn-primary {
+  background-color: #3a86ff;
+  border-color: #3a86ff;
+}
+
+.btn-outline-primary {
+  color: #3a86ff;
+  border-color: #3a86ff;
+}
+
+.btn-outline-primary:hover {
+  background-color: rgba(58, 134, 255, 0.08);
+}
+
+.btn-outline-success {
+  color: #2f8f4f;
+  border-color: #2f8f4f;
+}
+
+.btn-outline-success:hover {
+  background-color: rgba(47, 143, 79, 0.1);
+}
+
+.card-body h5,
+.card-body h6 {
+  color: #1f4567;
+}
+
+@media (max-width: 767px) {
+  .table-responsive {
+    max-height: none;
+  }
+}

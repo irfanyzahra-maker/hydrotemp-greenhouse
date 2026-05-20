@@ -1,0 +1,4 @@
+Flask>=2.2
+pandas>=2.0
+werkzeug>=3.0
+gunicorn>=22.0

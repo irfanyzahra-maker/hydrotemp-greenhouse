@@ -1,0 +1,48 @@
+{% extends 'layout.html' %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-xl-8">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h2 class="card-title mb-3">Hasil Analisis HydroTemp</h2>
+        <p class="text-muted">Analisis terbaru untuk kondisi greenhouse Anda.</p>
+        <div class="row g-3 mb-4">
+          <div class="col-md-6">
+            <div class="card analysis-result-card">
+              <div class="card-body">
+                <h6>Suhu</h6>
+                <p class="fs-4 mb-1">{{ analysis.suhu }} °C</p>
+                <span class="badge bg-info">{{ analysis.suhu_status }}</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card analysis-result-card">
+              <div class="card-body">
+                <h6>Kelembapan</h6>
+                <p class="fs-4 mb-1">{{ analysis.kelembapan }} %</p>
+                <span class="badge bg-info">{{ analysis.kelembapan_status }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card border-success mb-4">
+          <div class="card-body">
+            <h5 class="mb-3">Rekomendasi Otomatis</h5>
+            <p>{{ analysis.recommendation }}</p>
+            <p class="mb-1"><strong>Status Kipas:</strong> {{ analysis.fan }}</p>
+            <p class="mb-1"><strong>Status Humidifier:</strong> {{ analysis.humidifier }}</p>
+            <p class="mb-0"><strong>Status Ventilasi:</strong> {{ analysis.ventilation }}</p>
+          </div>
+        </div>
+        <div class="d-flex justify-content-between align-items-center">
+          <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Kembali ke Dashboard</a>
+          <form action="{{ url_for('reset') }}" method="post">
+            <button type="submit" class="btn btn-outline-danger">Reset Analisis</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

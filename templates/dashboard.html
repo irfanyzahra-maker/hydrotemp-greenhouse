@@ -1,0 +1,128 @@
+{% extends 'layout.html' %}
+{% block content %}
+<div class="d-flex align-items-center justify-content-between mb-4">
+  <div>
+    <h1 class="h3 mb-1">Dashboard HydroTemp</h1>
+    <p class="text-muted mb-0">Monitor kondisi greenhouse dan analisis otomatis suhu & kelembapan.</p>
+  </div>
+  <a href="{{ url_for('analysis') }}" class="btn btn-outline-success">Lihat Hasil Analisis</a>
+</div>
+
+<div class="row g-3 mb-4">
+  {% for label, value in summary.items() %}
+  <div class="col-12 col-md-6 col-xl-4">
+    <div class="card card-summary h-100">
+      <div class="card-body">
+        <h6 class="text-muted">{{ label }}</h6>
+        <p class="fs-4 mb-0">{{ value }}</p>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<div class="row g-4 mb-4">
+  <div class="col-lg-5">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">Input Monitoring Greenhouse</h5>
+        <form action="{{ url_for('analyze') }}" method="post" novalidate>
+          <div class="mb-3">
+            <label class="form-label">Suhu Greenhouse (°C)</label>
+            <input type="number" step="0.1" name="suhu" class="form-control" placeholder="Contoh: 28" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Kelembapan (%)</label>
+            <input type="number" step="0.1" name="kelembapan" class="form-control" placeholder="Contoh: 70" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Jenis Tanaman</label>
+            <select name="tanaman" class="form-select" required>
+              <option value="">Pilih tanaman</option>
+              {% for crop in crops %}
+              <option value="{{ crop }}">{{ crop }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary">Analisis</button>
+            <button type="reset" class="btn btn-outline-secondary">Reset</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-7">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+          <div>
+            <h5 class="card-title mb-0">Data Monitoring</h5>
+            <p class="text-muted small mb-0">Filter data CSV berdasarkan jenis tanaman.</p>
+          </div>
+          <form method="get" class="d-flex align-items-center gap-2">
+            <select name="crop" class="form-select form-select-sm">
+              <option value="Semua" {% if crop_filter == 'Semua' %}selected{% endif %}>Semua Tanaman</option>
+              {% for crop in crops %}
+              <option value="{{ crop }}" {% if crop_filter == crop %}selected{% endif %}>{{ crop }}</option>
+              {% endfor %}
+            </select>
+            <button class="btn btn-sm btn-outline-primary">Filter</button>
+          </form>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-sm table-hover align-middle mb-0">
+            <thead class="table-light">
+              <tr>
+                <th>Waktu</th>
+                <th>Tanaman</th>
+                <th>Suhu (°C)</th>
+                <th>Kelembapan (%)</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% if table_data %}
+                {% for row in table_data|reverse %}
+                <tr>
+                  <td>{{ row.Timestamp }}</td>
+                  <td>{{ row.Tanaman }}</td>
+                  <td>{{ row.Suhu }}</td>
+                  <td>{{ row.Kelembapan }}</td>
+                </tr>
+                {% endfor %}
+              {% else %}
+                <tr><td colspan="4" class="text-center text-muted">Data kosong.</td></tr>
+              {% endif %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% if analysis %}
+<div class="card border-success shadow-sm mb-4">
+  <div class="card-body">
+    <h5 class="card-title">Ringkasan Analisis Terakhir</h5>
+    <div class="row gy-3">
+      <div class="col-md-4">
+        <div class="analysis-card p-3 bg-light rounded">
+          <strong>{{ analysis.tanaman }}</strong>
+          <p class="mb-1">{{ analysis.suhu }} °C / {{ analysis.kelembapan }} %</p>
+          <span class="badge bg-success">{{ analysis.message }}</span>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <div class="p-3 bg-white rounded border">
+          <p class="mb-1"><strong>Status Suhu:</strong> {{ analysis.suhu_status }}</p>
+          <p class="mb-1"><strong>Status Kelembapan:</strong> {{ analysis.kelembapan_status }}</p>
+          <p class="mb-1"><strong>Rekomendasi:</strong> {{ analysis.recommendation }}</p>
+          <p class="mb-0"><strong>Peralatan:</strong> Fan {{ analysis.fan }}, Humidifier {{ analysis.humidifier }}, Ventilasi {{ analysis.ventilation }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+{% endblock %}
