@@ -56,8 +56,6 @@ def init_db():
                 pass
     conn.close()
 
-init_db()
-
 
 def ensure_dataset():
     if not os.path.exists(CSV_FILE) or os.path.getsize(CSV_FILE) == 0:
@@ -279,7 +277,5 @@ def reset():
 
 
 if __name__ == '__main__':
-    init_db()
-    debug_mode = os.getenv('FLASK_DEBUG', '0') == '1'
-    port = int(os.getenv('PORT', 5000))
-    app.run(host='0.0.0.0', port=port, debug=debug_mode)
+    app.run(host='0.0.0.0', port=5000, debug=True)
+    
